@@ -19,8 +19,11 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Verificar Python
-        run: python --version
+      - name: Instalar pytest
+        run: pip install pytest
+
+      - name: Ejecutar pruebas unitarias
+        run: pytest
 
       - name: Construir imagen Docker
         run: docker build -t calculadora-python .
