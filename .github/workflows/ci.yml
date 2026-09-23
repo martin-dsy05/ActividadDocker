@@ -19,11 +19,13 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Instalar pytest
-        run: pip install pytest
+      - name: Instalar herramientas de prueba
+        run: pip install pytest coverage
 
-      - name: Ejecutar pruebas unitarias
-        run: pytest
+      - name: Ejecutar pruebas y calcular cobertura
+        run: |
+          coverage run -m pytest
+          coverage report
 
       - name: Construir imagen Docker
         run: docker build -t calculadora-python .
