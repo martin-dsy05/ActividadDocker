@@ -22,10 +22,35 @@ jobs:
       - name: Instalar herramientas de prueba
         run: pip install pytest coverage
 
-      - name: Ejecutar pruebas y calcular cobertura
+      - name: Ejecutar pruebas unitarias
+        run: |
+          pytest -v | tee pruebas.txt
+
+      - name: Calcular cobertura
         run: |
           coverage run -m pytest
-          coverage report
+          coverage report | tee cobertura.txt
 
       - name: Construir imagen Docker
         run: docker build -t calculadora-python .
+
+      - name: Crear resumen de resultados
+        if: always()
+        run: |
+          echo "# Resultados de la práctica" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "## Pruebas unitarias" >> $GITHUB_STEP_SUMMARY
+          echo '```text' >> $GITHUB_STEP_SUMMARY
+          cat pruebas.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Cobertura de código" >> $GITHUB_STEP_SUMMARY
+          echo '```text' >> $GITHUB_STEP_SUMMARY
+          cat cobertura.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Docker" >> $GITHUB_STEP_SUMMARY
+          echo "Imagen **calculadora-python** construida correctamente." >> $GITHUB_STEP_SUMMARY
