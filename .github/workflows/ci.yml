@@ -23,6 +23,7 @@ jobs:
         with:
           context: .
           tags: calculadora-python
+          load: true
 
       - name: Ejecutar Docker Bake
         uses: docker/bake-action@v6
