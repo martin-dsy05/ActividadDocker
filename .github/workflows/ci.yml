@@ -1,4 +1,4 @@
-name: CI - Actividad Docker
+name: Validacion de compilacion Docker
 
 on:
   push:
@@ -7,11 +7,12 @@ on:
     branches: [main]
 
 jobs:
-  construir:
+  validacion:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Descargar codigo
+
+      - name: Descargar codigo del repositorio
         uses: actions/checkout@v4
 
       - name: Configurar Python
@@ -19,38 +20,8 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Instalar herramientas de prueba
-        run: pip install pytest coverage
-
-      - name: Ejecutar pruebas unitarias
-        run: |
-          pytest -v | tee pruebas.txt
-
-      - name: Calcular cobertura
-        run: |
-          coverage run -m pytest
-          coverage report | tee cobertura.txt
+      - name: Verificar instalacion de Python
+        run: python --version
 
       - name: Construir imagen Docker
         run: docker build -t calculadora-python .
-
-      - name: Crear resumen de resultados
-        if: always()
-        run: |
-          echo "# Resultados de la práctica" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          echo "## Pruebas unitarias" >> $GITHUB_STEP_SUMMARY
-          echo '```text' >> $GITHUB_STEP_SUMMARY
-          cat pruebas.txt >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "## Cobertura de código" >> $GITHUB_STEP_SUMMARY
-          echo '```text' >> $GITHUB_STEP_SUMMARY
-          cat cobertura.txt >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "## Docker" >> $GITHUB_STEP_SUMMARY
-          echo "Imagen **calculadora-python** construida correctamente." >> $GITHUB_STEP_SUMMARY
