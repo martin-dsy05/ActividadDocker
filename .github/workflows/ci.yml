@@ -26,3 +26,6 @@ jobs:
 
       - name: Ejecutar Docker Bake
         uses: docker/bake-action@v6
+
+      - name: Ejecutar contenedor Docker
+        run: docker run calculadora-python

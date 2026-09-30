@@ -19,8 +19,8 @@ def dividir(a, b):
 if __name__ == "__main__":
     print("=== Calculadora ===")
 
-    num1 = float(input("Ingresa el primer número: "))
-    num2 = float(input("Ingresa el segundo número: "))
+    num1 = 10
+    num2 = 5
 
     print("Suma:", sumar(num1, num2))
     print("Resta:", restar(num1, num2))
